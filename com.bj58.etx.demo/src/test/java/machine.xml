@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<machines>
+    <machine ip="127.0.0.1" no="1"/>
+    <machine ip="x.x.x.x" no="2"/>
+</machines>
