@@ -2,8 +2,7 @@ package com.bj58.etx.api.enums;
 
 public enum EtxSyncLogStateEnum {
 	
-	TRY_SUCCESS("try成功"), 
-	TRY_ERROR("try失败"),
+	INIT("未执行"), 
 	CONFIRM_SUCCESS("confirm成功"), 
 	CONFIRM_ERROR("confirm失败"),
 	CANCEL_SUCCESS("cancel成功"), 

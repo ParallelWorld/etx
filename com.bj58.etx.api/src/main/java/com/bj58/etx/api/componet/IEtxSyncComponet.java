@@ -14,7 +14,7 @@ public interface IEtxSyncComponet extends IEtxComponet {
 	public boolean doConfirm(IEtxContext ctx) throws Exception;
 
 	/**
-	 * 取消操作，要求幂等
+	 * 取消操作，要求无副作用
 	 */
 	public boolean doCancel(IEtxContext ctx) throws Exception;
 }

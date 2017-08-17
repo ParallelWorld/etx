@@ -5,7 +5,7 @@ import com.bj58.etx.api.vo.IEtxVo;
 
 /**
  * etx上下文
- * 
+ * 注意：异步组件不要修改上下文的内容。
  * @author shencl
  */
 public interface IEtxContext {

@@ -9,7 +9,7 @@ import com.bj58.etx.api.context.IEtxContext;
 public interface IEtxTCCComponet extends IEtxSyncComponet {
 
 	/**
-	 * 执行操作
+	 * 执行操作，要求无状态
 	 */
 	public boolean doTry(IEtxContext ctx) throws Exception;
 }
