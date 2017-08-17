@@ -20,7 +20,7 @@ public class MysqlDao implements IEtxDao {
 	@Override
 	public EtxTX getTxById(long txId) throws Exception {
 		Connection conn = MysqlHelper.getConn();
-		String sql = "select * from t_tx where id = ?";
+		String sql = "select * from t_tx where `id` = ?";
 		PreparedStatement st = conn.prepareStatement(sql);
 		st.setLong(1, txId);
 		ResultSet rs = st.executeQuery();
@@ -34,9 +34,9 @@ public class MysqlDao implements IEtxDao {
 	@Override
 	public EtxAsyncLog getAsyncLogById(long txId, long logId) throws Exception {
 		Connection conn = MysqlHelper.getConn();
-		String sql = "select * from t_async_log where id = ?";
+		String sql = "select * from t_async_log where `id` = ?";
 		PreparedStatement st = conn.prepareStatement(sql);
-		st.setLong(1, txId);
+		st.setLong(1, logId);
 		ResultSet rs = st.executeQuery();
 		while (rs.next()) {
 			return RsMapper.toAsyncLog(rs);
@@ -48,9 +48,9 @@ public class MysqlDao implements IEtxDao {
 	@Override
 	public EtxSyncLog getSyncLogById(long txId, long logId) throws Exception {
 		Connection conn = MysqlHelper.getConn();
-		String sql = "select * from t_sync_log where id = ?";
+		String sql = "select * from t_sync_log where `id` = ?";
 		PreparedStatement st = conn.prepareStatement(sql);
-		st.setLong(1, txId);
+		st.setLong(1, logId);
 		ResultSet rs = st.executeQuery();
 		while (rs.next()) {
 			return RsMapper.toSyncLog(rs);
@@ -63,10 +63,10 @@ public class MysqlDao implements IEtxDao {
 		long id = IdHelper.genId();
 		tx.setId(id);
 		Connection conn = MysqlHelper.getConn();
-		String sql = "INSERT INTO t_tx " + "VALUES (?, ?, ?, ?,?)";
+		String sql = "INSERT INTO t_tx(`id`,`flowtype`,`state`,`addtime`,`modifytime`) VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(sql);
 		RsMapper.fillSt(tx, st,true);
-		st.executeUpdate(sql);
+		st.executeUpdate();
 		MysqlHelper.releaseConn(conn);
 		return id;
 	}
@@ -76,23 +76,22 @@ public class MysqlDao implements IEtxDao {
 		long id = IdHelper.genId();
 		log.setId(id);
 		Connection conn = MysqlHelper.getConn();
-		String sql = "INSERT INTO t_async_log " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO t_async_log(`id`,`txid`,`componet`,`data`,`state`,`addtime`,`modifytime`,`count`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(sql);
 		RsMapper.fillSt(log, st,true);
-		st.executeUpdate(sql);
+		st.executeUpdate();
 		MysqlHelper.releaseConn(conn);
 		return id;
 	}
-
 	@Override
 	public long insertSyncLog(EtxSyncLog log) throws Exception {
 		long id = IdHelper.genId();
 		log.setId(id);
 		Connection conn = MysqlHelper.getConn();
-		String sql = "INSERT INTO t_sync_log " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO t_sync_log(`id`,`txid`,`componet`,`data`,`state`,`addtime`,`modifytime`,`cancelcount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement st = conn.prepareStatement(sql);
 		RsMapper.fillSt(log, st,true);
-		st.executeUpdate(sql);
+		st.executeUpdate();
 		MysqlHelper.releaseConn(conn);
 		return id;
 	}
@@ -101,7 +100,7 @@ public class MysqlDao implements IEtxDao {
 	public List<EtxTX> getTxList(EtxTXStateEnum state, int pageSize)
 			throws Exception {
 		Connection conn = MysqlHelper.getConn();
-		String sql = "select * from t_async_log where state = ? limit 0,?";
+		String sql = "select * from t_async_log where `state` = ? limit 0,?";
 		PreparedStatement st = conn.prepareStatement(sql);
 		st.setInt(1, state.getCode());
 		st.setLong(2, pageSize);
@@ -120,7 +119,7 @@ public class MysqlDao implements IEtxDao {
 	@Override
 	public List<EtxAsyncLog> getAsyncLogList(long txId) throws Exception {
 		Connection conn = MysqlHelper.getConn();
-		String sql = "select * from t_async_log where txId = ? order by id desc";
+		String sql = "select * from t_async_log where `txid` = ? order by id desc";
 		PreparedStatement st = conn.prepareStatement(sql);
 		st.setLong(1, txId);
 		ResultSet rs = st.executeQuery();
@@ -138,7 +137,7 @@ public class MysqlDao implements IEtxDao {
 	@Override
 	public List<EtxSyncLog> getSyncLogList(long txId) throws Exception {
 		Connection conn = MysqlHelper.getConn();
-		String sql = "select * from t_sync_log where txId = ? order by id desc";
+		String sql = "select * from t_sync_log where txid = ? order by id desc";
 		PreparedStatement st = conn.prepareStatement(sql);
 		st.setLong(1, txId);
 		ResultSet rs = st.executeQuery();
@@ -153,10 +152,10 @@ public class MysqlDao implements IEtxDao {
 	@Override
 	public void updateTx(EtxTX tx) throws Exception {
 		Connection conn = MysqlHelper.getConn();
-		String sql = "UPDATE t_tx SET flowtype = ?,state = ?,addtime=?,modifytime =? WHERE id = ?";
+		String sql = "UPDATE t_tx SET `flowtype` = ?,`state` = ?,`addtime`=?,`modifytime` =? WHERE id = ?";
 		PreparedStatement st = conn.prepareStatement(sql);
 		RsMapper.fillSt(tx, st,false);
-		st.executeUpdate(sql);
+		st.executeUpdate();
 		MysqlHelper.releaseConn(conn);
 	}
 
@@ -164,20 +163,20 @@ public class MysqlDao implements IEtxDao {
 	@Override
 	public void updateSyncLog(EtxSyncLog log) throws Exception {
 		Connection conn = MysqlHelper.getConn();
-		String sql = "UPDATE t_sync_log SET txid = ?,componet = ?,data=?,state =?,addtime=?,modifytime=?,cancelcount=? WHERE id = ?";
+		String sql = "UPDATE t_sync_log SET `txid` = ?,`componet` = ?,`data`=?,`state` =?,`addtime`=?,`modifytime`=?,`cancelcount`=? WHERE id = ?";
 		PreparedStatement st = conn.prepareStatement(sql);
 		RsMapper.fillSt(log, st,false);
-		st.executeUpdate(sql);
+		st.executeUpdate();
 		MysqlHelper.releaseConn(conn);
 	}
 
 	@Override
 	public void updateAsyncLog(EtxAsyncLog log) throws Exception {
 		Connection conn = MysqlHelper.getConn();
-		String sql = "UPDATE t_async_log SET txid = ?,componet = ?,data=?,state =?,addtime=?,modifytime=?,count=? WHERE id = ?";
+		String sql = "UPDATE t_async_log SET `txid` = ?,`componet` = ?,`data`=?,`state` =?,`addtime`=?,`modifytime`=?,`count`=? WHERE id = ?";
 		PreparedStatement st = conn.prepareStatement(sql);
 		RsMapper.fillSt(log, st,false);
-		st.executeUpdate(sql);
+		st.executeUpdate();
 		MysqlHelper.releaseConn(conn);
 	}
 }

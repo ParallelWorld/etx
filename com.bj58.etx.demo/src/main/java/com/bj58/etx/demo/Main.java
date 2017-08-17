@@ -12,7 +12,7 @@ import com.bj58.etx.demo.vo.TestVo;
 
 public class Main {
 	public static void main(String[] args) {
-		EtxInit.init("/opt/etx.properties");
+		EtxInit.init("d:/etx/config/etx.properties");
 		
 		TestDto dto = new TestDto();
 		Long testId = 100L;

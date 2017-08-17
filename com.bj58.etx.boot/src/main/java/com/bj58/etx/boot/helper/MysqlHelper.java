@@ -37,7 +37,7 @@ public class MysqlHelper {
 			p.load(new FileInputStream(file));
 
 			URL = p.getProperty("mysql.url");
-			USERNAME = p.getProperty("mongo.username");
+			USERNAME = p.getProperty("mysql.username");
 			PASSWORD = p.getProperty("mysql.password");
 
 		} catch (Exception e) {
@@ -57,14 +57,8 @@ public class MysqlHelper {
 
 	public static void releaseConn(Connection conn) {
 		try {
-			try {
-				if (conn != null) {
-					conn.commit();
-				}
-			} finally {
-				if (conn != null) {
-					conn.close();
-				}
+			if (conn != null) {
+				conn.close();
 			}
 		} catch (SQLException e) {
 			log.error("释放 connection失败", e);
