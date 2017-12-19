@@ -1,10 +1,5 @@
 package com.bj58.etx.core.util;
 
-/**
- * 分布式的id规则
- * @author shencl
- *
- */
 public class EtxIdUtil {
 	private static long lastTimeStamp = -1L;
 	private static long begin = 1483200000000L; //2017-01-01 00:00:00

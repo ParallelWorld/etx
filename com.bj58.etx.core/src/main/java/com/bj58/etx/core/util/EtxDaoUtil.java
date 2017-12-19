@@ -8,7 +8,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.bj58.etx.api.componet.IEtxAsyncComponet;
 import com.bj58.etx.api.componet.IEtxSyncComponet;
-import com.bj58.etx.api.componet.IEtxTCCComponet;
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.db.EtxAsyncLog;
 import com.bj58.etx.api.db.EtxSyncLog;
@@ -18,7 +17,6 @@ import com.bj58.etx.api.enums.EtxAsyncLogStateEnum;
 import com.bj58.etx.api.enums.EtxSyncLogStateEnum;
 import com.bj58.etx.api.enums.EtxTXStateEnum;
 import com.bj58.etx.api.serialize.IEtxSerializer;
-import com.bj58.etx.core.cache.EtxClassCache;
 import com.bj58.etx.core.heatbeat.EtxDBListener;
 import com.bj58.etx.core.runtime.EtxRuntime;
 
@@ -91,13 +89,8 @@ public class EtxDaoUtil {
 
 		if (list != null && list.size() > 0) {
 			for (EtxSyncLog log : list) {
-				if (EtxSyncLogStateEnum.CANCEL_ERROR.name().equals(log.getState()) || EtxSyncLogStateEnum.TRY_SUCCESS.name().equals(log.getState())
-						|| EtxSyncLogStateEnum.CONFIRM_SUCCESS.name().equals(log.getState())) {
+				if (EtxSyncLogStateEnum.CANCEL_ERROR.name().equals(log.getState()) || EtxSyncLogStateEnum.CONFIRM_SUCCESS.name().equals(log.getState()) || EtxSyncLogStateEnum.CONFIRM_ERROR.name().equals(log.getState())) {
 					result.add(log);
-				} else if (EtxSyncLogStateEnum.CONFIRM_ERROR.name().equals(log.getState())) {
-					if (EtxClassCache.getInstance(log.getComponet()) instanceof IEtxTCCComponet) {
-						result.add(log);
-					}
 				}
 			}
 		}
@@ -158,5 +151,18 @@ public class EtxDaoUtil {
 		log.setModifyTime(EtxDateTimeUtil.getFullTimestamp());
 		log.setState(state.name());
 		dao.updateAsyncLog(log);
+	}
+	
+	
+	public static EtxTX loadTx(long txId) throws Exception {
+		return dao.getTxById(txId);
+	}
+	
+	public static EtxSyncLog loadSyncLog(long txId,long logId) throws Exception {
+		return dao.getSyncLogById(txId, logId);
+	}
+	
+	public static EtxAsyncLog loadAsyncLog(long txId,long logId) throws Exception {
+		return dao.getAsyncLogById(txId, logId);
 	}
 }

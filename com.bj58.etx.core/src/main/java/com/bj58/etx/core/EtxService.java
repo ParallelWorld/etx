@@ -1,9 +1,7 @@
 package com.bj58.etx.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 import org.apache.commons.logging.Log;
@@ -20,20 +18,28 @@ import com.bj58.etx.api.enums.EtxSyncLogStateEnum;
 import com.bj58.etx.api.enums.EtxTXStateEnum;
 import com.bj58.etx.api.exception.EtxException;
 import com.bj58.etx.api.vo.IEtxVo;
-import com.bj58.etx.core.async.ProcessAsyncWorker;
+import com.bj58.etx.core.async.AsyncWorker;
 import com.bj58.etx.core.cache.EtxClassCache;
 import com.bj58.etx.core.heatbeat.EtxDBListener;
 import com.bj58.etx.core.invoke.ComponetInvoker;
 import com.bj58.etx.core.util.EtxDaoUtil;
+import com.bj58.etx.core.util.EtxMonitorUtil;
 
 public class EtxService {
+
+	/**
+	 * 事务组id，只有在非PROCESS模式下有效，即大于0
+	 */
+	private long txId;
 
 	private IEtxContext ctx;
 	private List<IEtxTCCComponet> tccList = new ArrayList<IEtxTCCComponet>();
 	private List<IEtxSyncComponet> syncList = new ArrayList<IEtxSyncComponet>();
 	private List<IEtxAsyncComponet> asyncList = new ArrayList<IEtxAsyncComponet>();
 	private Stack<IEtxSyncComponet> stack = new Stack<IEtxSyncComponet>();
-	Map<IEtxSyncComponet, Long> logIdMap = new HashMap<IEtxSyncComponet, Long>();
+	// binLog的执行时间
+	private long binLogNanos = 0;
+
 	private static EtxDBListener listener = null;
 	private static Log logger = LogFactory.getLog(EtxService.class);
 
@@ -106,55 +112,53 @@ public class EtxService {
 	}
 
 	public boolean invoke(Object... params) {
+
+		long invokeBegin = System.currentTimeMillis();
+		EtxMonitorUtil.txTotal();
 		init(params);
 		try {
-			long txId = 0;
-			if (EtxRunMode.byCode(ctx.getRunMode()) != EtxRunMode.PROCESS) {
+			
+			// 1.插入事务记录
+			if (ctx.getRunMode() != EtxRunMode.PROCESS.getCode()) {
+				long begin = System.nanoTime();
 				txId = EtxDaoUtil.insertTx(ctx.getFlowType());
-				logger.info("------事务组记录插入成功,txId=" + txId);
-
-				// binLog模式先记录日志
-				if (EtxRunMode.byCode(ctx.getRunMode()) == EtxRunMode.BINLOG) {
-					for (IEtxSyncComponet c : syncList) {
-						long logId = EtxDaoUtil.insertSyncLog(c, ctx, txId, EtxSyncLogStateEnum.TRY_SUCCESS);
-						logIdMap.put(c, logId);
-					}
-				}
-
-				// 写入异步组件日志
-				for (IEtxAsyncComponet c : asyncList) {
-					EtxDaoUtil.insertAsyncLog(c, ctx, txId);
-				}
+				long end = System.nanoTime();
+				binLogNanos = binLogNanos + (end - begin);
+				logger.info("------事务组记录插入成功,txId=" + txId + ",flowType=" + ctx.getFlowType());
 			}
-
-			boolean result = commitSyncComponets(txId);
+			
+			// 2.执行所有同步组件
+			boolean result = invokeSyncComponents();
 
 			if (result) {
 				if (txId > 0) {
-					// 标记事务组状态为同步成功
+					
+					long begin = System.nanoTime();
+					// 3.插入异步日志
+					commitAsyncComponents();
+					// 4.标记事务组状态为同步成功
 					EtxDaoUtil.updateTx(txId, EtxTXStateEnum.SYNCSUCCESS);
-					// 异步执行所有任务
-					ProcessAsyncWorker.invokeAsyncFromDB(txId, ctx);
-				} else {
-					// 进程模式下用线程池执行异步任务
-					ProcessAsyncWorker.invokeAsyncInProcess(asyncList, ctx);
+					long end = System.nanoTime();
+					binLogNanos = binLogNanos + (end - begin);
+					logger.info("------修改事务组状态为SYNCSUCCESS,txId=" + txId + ",flowType=" + ctx.getFlowType());
 				}
 
-				if (ctx.getVo() != null) {
-					ctx.getVo().setSuccess(true);
-				}
-
+				EtxMonitorUtil.syncSuccess();
+				
+				// 5.执行所有异步组件
+				invokeAsyncComponents();
+				
+				long invokeEnd = System.currentTimeMillis();
+				logger.info("------BinLog执行时间=" + (binLogNanos / 1000 / 1000) + "ms,txId=" + txId + ",flowType=" + ctx.getFlowType());
+				logger.info("------Etx总执行时间=" + (invokeEnd - invokeBegin) + "ms,txId=" + txId + ",flowType=" + ctx.getFlowType());
 				return true;
 			} else {
-				if (EtxRunMode.byCode(ctx.getRunMode()) == EtxRunMode.BINLOG) {
-					ProcessAsyncWorker.roolbackFromDB(txId, ctx);
-				} else {
-					ProcessAsyncWorker.roolbackInProcess(stack, ctx);
-				}
+				rollback();
+				EtxMonitorUtil.syncFail();
 				return false;
 			}
-		} catch (Exception e) {
-			logger.error("", e);
+		} catch (Throwable e) {
+			logger.error("etx invoke error", e);
 			throw new EtxException(e);
 		}
 	}
@@ -174,23 +178,18 @@ public class EtxService {
 	/**
 	 * 提交所有同步组件
 	 */
-	private boolean commitSyncComponets(long txId) throws Exception {
-
+	private boolean invokeSyncComponents() {
 		// 1.执行所有tcc的try
 		for (IEtxTCCComponet c : tccList) {
-			boolean b = invokeTry(c, txId);
+			boolean b = ComponetInvoker.invokeTry(c, ctx);
 			if (!b) {
 				return false;
 			}
 		}
 
-		if (EtxRunMode.byCode(ctx.getRunMode()) != EtxRunMode.BINLOG) {
-			stack.clear();
-		}
-
 		// 2.执行所有sync组件的confirm
 		for (IEtxSyncComponet c : syncList) {
-			boolean b = invokeConfirm(c, txId);
+			boolean b = invokeConfirm(c);
 			if (!b) {
 				return false;
 			}
@@ -204,50 +203,70 @@ public class EtxService {
 	}
 
 	/**
-	 * 执行try
+	 * 提交所有异步组件
 	 */
-	private boolean invokeTry(IEtxTCCComponet c, long txId) throws Exception {
-
-		boolean b = ComponetInvoker.invokeTry(c, ctx);
-
-		Long logId = logIdMap.get(c);
-
-		if (logId != null && logId > 0) {
-			if (!b) {
-				EtxDaoUtil.updateSyncLogState(txId, logId, EtxSyncLogStateEnum.TRY_ERROR);
-			}
-		} else {
-			// 非binlog模式 执行成功，推入回滚栈中
-			if (b) {
-				stack.push(c);
+	private void commitAsyncComponents() throws Exception {
+		if (txId > 0) {
+			// 写入异步组件日志
+			for (IEtxAsyncComponet c : asyncList) {
+				EtxDaoUtil.insertAsyncLog(c, ctx, txId);
 			}
 		}
+	}
+	
+	/**
+	 * 提交所有异步组件
+	 */
+	private void invokeAsyncComponents() throws Exception {
+		if (txId > 0) {
+			// 异步执行所有任务
+			AsyncWorker.invokeAsyncFromDB(txId, ctx);
+		} else {
+			// 进程模式下用线程池执行异步任务
+			AsyncWorker.invokeAsyncInProcess(asyncList, ctx);
+		}
+	}
 
-		return b;
+	private void rollback() throws Exception {
+		if (EtxRunMode.byCode(ctx.getRunMode()) == EtxRunMode.BINLOG) {
+			logger.error("------事务执行失败,txId=" + txId + ",flowType=" + ctx.getFlowType());
+			AsyncWorker.roolbackFromDB(txId, ctx);
+		} else {
+			AsyncWorker.roolbackInProcess(stack, ctx);
+		}
 	}
 
 	/**
 	 * 执行所有confirm
 	 */
-	private boolean invokeConfirm(IEtxSyncComponet c, long txId) throws Exception {
-		Long logId = logIdMap.get(c);
-
-		if (logId != null && logId > 0) {
-			EtxDaoUtil.updateSyncLogState(txId, logId, EtxSyncLogStateEnum.CONFIRM_SUCCESS);
-		}
-
-		boolean b = ComponetInvoker.invokeConfirm(c, ctx);
-
-		if (logId > 0) {
-			if (!b) {
-				EtxDaoUtil.updateSyncLogState(txId, logId, EtxSyncLogStateEnum.CONFIRM_ERROR);
-			}
-		} else {
-			// 非binlog模式 执行成功，推入回滚栈中
-			if (b) {
+	private boolean invokeConfirm(IEtxSyncComponet c) {
+		try {
+			long logId = 0;
+			// 1. binLog模式先记录日志(默认成功)
+			if (EtxRunMode.byCode(ctx.getRunMode()) == EtxRunMode.BINLOG) {
+				long begin = System.nanoTime();
+				logId = EtxDaoUtil.insertSyncLog(c, ctx, txId, EtxSyncLogStateEnum.CONFIRM_SUCCESS);
+				long end = System.nanoTime();
+				binLogNanos = binLogNanos + (end - begin);
+			} else {
 				stack.push(c);
 			}
+			// 2.执行业务方法
+			boolean b = ComponetInvoker.invokeConfirm(c, ctx);
+			
+			if (logId > 0) {
+				if (!b) {
+					// 3.执行失败修改组件状态
+					long begin = System.nanoTime();
+					EtxDaoUtil.updateSyncLogState(txId, logId, EtxSyncLogStateEnum.CONFIRM_ERROR);
+					long end = System.nanoTime();
+					binLogNanos = binLogNanos + (end - begin);
+				}
+			}
+			return b;
+		} catch (Throwable e) {
+			logger.error("", e);
+			return false;
 		}
-		return b;
 	}
 }

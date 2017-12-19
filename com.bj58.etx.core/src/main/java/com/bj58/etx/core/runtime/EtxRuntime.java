@@ -1,6 +1,7 @@
 package com.bj58.etx.core.runtime;
 
 import com.bj58.etx.api.db.IEtxDao;
+import com.bj58.etx.api.monitor.IEtxMonitor;
 import com.bj58.etx.api.serialize.IEtxSerializer;
 
 public class EtxRuntime {
@@ -9,6 +10,9 @@ public class EtxRuntime {
 
 	// 序列化类
 	public static IEtxSerializer serializer = null;
+	
+	// 监控类
+	public static IEtxMonitor monitor = null;
 
 	// 心跳检测时间
 	public static int dbHeatBeatInterval = 5 * 60 * 1000;
@@ -25,10 +29,10 @@ public class EtxRuntime {
 	// task日志流水时间(毫秒)
 	public static int taskLoopTxInterval = 5 * 60 * 1000;
 	
-	// 单次从事务表里获取的记录条数
+	// 单次从同步记录表里获取的记录条数
 	public static int countForCancelOnce = 2000;
 	
-	// 单次从事务表里获取的记录条数
+	// 单次从异步记录表里获取的记录条数
 	public static int countForDoAsyncOnce = 2000;
 
 	public static void setDao(IEtxDao dao) {
@@ -37,6 +41,10 @@ public class EtxRuntime {
 
 	public static void setSerializer(IEtxSerializer serializer) {
 		EtxRuntime.serializer = serializer;
+	}
+	
+	public static void setMonitor(IEtxMonitor monitor) {
+		EtxRuntime.monitor = monitor;
 	}
 
 	public static void setDbHeatBeatInterval(int dbHeatBeatInterval) {
