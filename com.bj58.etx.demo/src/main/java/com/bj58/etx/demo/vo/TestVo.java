@@ -15,4 +15,9 @@ public class TestVo implements IEtxVo{
 	public void setSuccess(boolean success) {
 		this.success = success;
 	}
+
+	@Override
+	public String toString() {
+		return "TestVo [success=" + success + "]";
+	}
 }

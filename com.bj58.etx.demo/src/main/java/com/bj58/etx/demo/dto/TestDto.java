@@ -18,6 +18,4 @@ public class TestDto implements IEtxDto{
 		return "TestDto [dtoId=" + dtoId + "]";
 	}
 	
-	
-	
 }

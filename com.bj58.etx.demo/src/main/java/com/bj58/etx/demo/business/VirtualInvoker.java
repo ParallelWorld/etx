@@ -14,10 +14,10 @@ public class VirtualInvoker {
 	public static boolean doBiz(IEtxContext ctx) throws Exception {
 		
 		//模拟业务执行
-		Thread.sleep(3000);
+		Thread.sleep(1000);
 		
 		// 模拟执行结果
-		if(ran.nextInt(20) > 5){
+		if(ran.nextInt(20) > 0){
 			return true;
 		}
 		return false;
