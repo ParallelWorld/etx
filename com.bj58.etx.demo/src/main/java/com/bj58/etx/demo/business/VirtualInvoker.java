@@ -5,7 +5,7 @@ import java.util.Random;
 import com.bj58.etx.api.context.IEtxContext;
 
 /**
- * 模拟业务执行 失败概率20%
+ * 模拟业务执行 失败概率10%
  */
 public class VirtualInvoker {
 	
@@ -17,7 +17,7 @@ public class VirtualInvoker {
 		Thread.sleep(1000);
 		
 		// 模拟执行结果
-		if(ran.nextInt(20) > 0){
+		if(ran.nextInt(20) > 2){
 			return true;
 		}
 		return false;
