@@ -29,7 +29,9 @@ public class MysqlHelper {
         }
     }
 
-    public static void init(String path) {
+    static {
+        String path = MongoHelper.class.getClassLoader().getResource("mysql.properties").getPath();
+
         try {
             Properties p = new Properties();
             File file = new File(path);

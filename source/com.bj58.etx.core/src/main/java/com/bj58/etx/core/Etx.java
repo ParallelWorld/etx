@@ -1,10 +1,10 @@
-package com.bj58.etx.boot;
+package com.bj58.etx.core;
 
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.enums.EtxRunMode;
-import com.bj58.etx.boot.context.EtxBaseContext;
-import com.bj58.etx.core.EtxService;
-import com.bj58.etx.core.EtxTaskService;
+import com.bj58.etx.core.context.EtxBaseContext;
+import com.bj58.etx.core.service.EtxService;
+import com.bj58.etx.core.service.EtxTaskService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

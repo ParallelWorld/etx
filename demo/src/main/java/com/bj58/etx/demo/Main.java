@@ -1,7 +1,7 @@
 package com.bj58.etx.demo;
 
-import com.bj58.etx.boot.Etx;
-import com.bj58.etx.boot.init.EtxInit;
+import com.bj58.etx.core.EtxInit;
+import com.bj58.etx.core.Etx;
 import com.bj58.etx.demo.componet.AsyncComponet;
 import com.bj58.etx.demo.componet.MonitorAsyncComponent;
 import com.bj58.etx.demo.componet.SyncComponet;

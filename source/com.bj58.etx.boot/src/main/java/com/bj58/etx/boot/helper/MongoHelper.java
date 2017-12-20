@@ -1,5 +1,6 @@
 package com.bj58.etx.boot.helper;
 
+import com.bj58.etx.core.EtxInit;
 import com.bj58.etx.core.util.EtxDateTimeUtil;
 import com.bj58.etx.core.util.EtxIdUtil;
 import com.mongodb.MongoClient;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
@@ -37,7 +39,9 @@ public class MongoHelper {
     private static String SYNCLOG_TABLE_NAME = "t_sync_log_";
     private static String ASYNCLOG_TABLE_NAME = "t_async_log_";
 
-    public static void init(String path) {
+    static {
+        String path = MongoHelper.class.getClassLoader().getResource("mongo.properties").getPath();
+
         try {
             Properties p = new Properties();
             File file = new File(path);

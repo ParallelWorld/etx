@@ -28,8 +28,9 @@ public class IdHelper {
     /**
      * 初始化机器码
      */
-    @SuppressWarnings("unchecked")
-    public static void init(String path) {
+    static {
+        String path = MongoHelper.class.getClassLoader().getResource("machine.xml").getPath();
+
         try {
             List<String> localIpList = getIPV4LocalList();
             log.info("------localIP:" + localIpList);
@@ -47,11 +48,11 @@ public class IdHelper {
                         String no = child.attribute("no").getValue();
                         machineNo = Integer.valueOf(no);
                         log.info("-----mapping ip:" + localIP + " machineNo:" + machineNo);
-                        return;
+                        break;
                     }
                 }
             }
-            log.warn("not find machine config, set default value=" + machineNo);
+//            log.warn("not find machine config, set default value=" + machineNo);
         } catch (Exception e) {
             throw new RuntimeException("init machine.xml error");
         }

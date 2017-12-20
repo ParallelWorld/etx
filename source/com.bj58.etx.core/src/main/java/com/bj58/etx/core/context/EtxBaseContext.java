@@ -1,4 +1,4 @@
-package com.bj58.etx.boot.context;
+package com.bj58.etx.core.context;
 
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.dto.IEtxDto;
