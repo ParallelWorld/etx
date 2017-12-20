@@ -7,9 +7,9 @@ import com.bj58.etx.demo.business.VirtualInvoker;
 
 public class AsyncComponet implements IEtxAsyncComponent {
 
-	@Override
-	public boolean doService(IEtxContext ctx) throws Exception {
-		return VirtualInvoker.doBiz(ctx);
-	}
+    @Override
+    public boolean doService(IEtxContext ctx) throws Exception {
+        return VirtualInvoker.doBiz(ctx);
+    }
 
 }

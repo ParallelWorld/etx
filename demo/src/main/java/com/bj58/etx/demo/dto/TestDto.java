@@ -2,20 +2,22 @@ package com.bj58.etx.demo.dto;
 
 import com.bj58.etx.api.dto.IEtxDto;
 
-public class TestDto implements IEtxDto{
-	private int dtoId;
+import java.io.Serializable;
 
-	public int getDtoId() {
-		return dtoId;
-	}
+public class TestDto implements IEtxDto, Serializable {
+    private int dtoId;
 
-	public void setDtoId(int dtoId) {
-		this.dtoId = dtoId;
-	}
+    public int getDtoId() {
+        return dtoId;
+    }
 
-	@Override
-	public String toString() {
-		return "TestDto [dtoId=" + dtoId + "]";
-	}
-	
+    public void setDtoId(int dtoId) {
+        this.dtoId = dtoId;
+    }
+
+    @Override
+    public String toString() {
+        return "TestDto [dtoId=" + dtoId + "]";
+    }
+
 }

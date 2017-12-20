@@ -7,14 +7,14 @@ import com.bj58.etx.demo.business.VirtualInvoker;
 
 public class MonitorAsyncComponent implements IEtxMonitorAsyncComponent {
 
-	@Override
-	public boolean doService(IEtxContext ctx) throws Exception {
-		return VirtualInvoker.doBiz(ctx);
-	}
+    @Override
+    public boolean doService(IEtxContext ctx) throws Exception {
+        return VirtualInvoker.doBiz(ctx);
+    }
 
-	@Override
-	public void onAbsolutelyError(IEtxContext ctx) throws Exception {
-		System.out.println("添加报警信息....");
-	}
+    @Override
+    public void onAbsolutelyError(IEtxContext ctx) throws Exception {
+        System.out.println("添加报警信息....");
+    }
 
 }

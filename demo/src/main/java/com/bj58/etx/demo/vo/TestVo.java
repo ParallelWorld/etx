@@ -2,22 +2,24 @@ package com.bj58.etx.demo.vo;
 
 import com.bj58.etx.api.vo.IEtxVo;
 
-public class TestVo implements IEtxVo{
+import java.io.Serializable;
 
-	private boolean success;
-	
-	@Override
-	public boolean isSuccess() {
-		return success;
-	}
+public class TestVo implements IEtxVo, Serializable {
 
-	@Override
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
+    private boolean success;
 
-	@Override
-	public String toString() {
-		return "TestVo [success=" + success + "]";
-	}
+    @Override
+    public boolean isSuccess() {
+        return success;
+    }
+
+    @Override
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
+
+    @Override
+    public String toString() {
+        return "TestVo [success=" + success + "]";
+    }
 }

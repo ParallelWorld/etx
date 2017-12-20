@@ -5,6 +5,7 @@ import com.bj58.etx.api.dto.IEtxDto;
 import com.bj58.etx.api.vo.IEtxVo;
 import com.bj58.etx.core.cache.EtxClassCache;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 
 @SuppressWarnings("unchecked")
-public class EtxBaseContext implements IEtxContext {
+public class EtxBaseContext implements IEtxContext, Serializable {
 
     private int runMode;
     private String flowType;

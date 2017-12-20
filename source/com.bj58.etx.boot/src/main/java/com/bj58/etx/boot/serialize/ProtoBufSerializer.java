@@ -42,7 +42,7 @@ public class ProtoBufSerializer implements IEtxSerializer {
             ProtostuffIOUtil.mergeFrom(bs, obj, schema);
         } catch (Exception e) {
             log.error("反序列化失败", e);
-            throw new EtxException("序列化失败");
+            throw new EtxException("反序列化失败");
         }
         return obj;
     }

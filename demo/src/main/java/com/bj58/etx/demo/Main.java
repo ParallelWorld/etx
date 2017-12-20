@@ -1,12 +1,8 @@
 package com.bj58.etx.demo;
 
-import com.bj58.etx.core.EtxInit;
 import com.bj58.etx.core.Etx;
-import com.bj58.etx.demo.componet.AsyncComponet;
-import com.bj58.etx.demo.componet.MonitorAsyncComponent;
-import com.bj58.etx.demo.componet.SyncComponet;
-import com.bj58.etx.demo.componet.TCC1Componet;
-import com.bj58.etx.demo.componet.TCC2Componet;
+import com.bj58.etx.core.EtxInit;
+import com.bj58.etx.demo.componet.*;
 import com.bj58.etx.demo.dto.TestDto;
 import com.bj58.etx.demo.vo.TestVo;
 
