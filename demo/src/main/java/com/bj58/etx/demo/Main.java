@@ -11,21 +11,21 @@ import com.bj58.etx.demo.dto.TestDto;
 import com.bj58.etx.demo.vo.TestVo;
 
 public class Main {
-	public static void main(String[] args) {
-		EtxInit.init("d:/etx/config/etx.properties");
-		
-		TestDto dto = new TestDto();
-		Long testId = 100L;
-		
-		Etx.open()
-		.setDto(dto)
-		.setVo(TestVo.class)
-		.setFlowType("TEST_BUSSINESS")
-		.addComponet(SyncComponet.class)
-		.addComponet(TCC1Componet.class)       
-		.addComponet(TCC2Componet.class)           
-		.addComponet(MonitorAsyncComponet.class)        
-		.addComponet(AsyncComponet.class)            
-		.invoke(testId);
-	}
+    public static void main(String[] args) {
+        EtxInit.init(Main.class.getClassLoader().getResource("etx.properties").getPath());
+
+        TestDto dto = new TestDto();
+        Long testId = 100L;
+
+        Etx.open()
+                .setDto(dto)
+                .setVo(TestVo.class)
+                .setFlowType("TEST_BUSSINESS")
+                .addComponet(SyncComponet.class)
+                .addComponet(TCC1Componet.class)
+                .addComponet(TCC2Componet.class)
+                .addComponet(MonitorAsyncComponet.class)
+                .addComponet(AsyncComponet.class)
+                .invoke(testId);
+    }
 }

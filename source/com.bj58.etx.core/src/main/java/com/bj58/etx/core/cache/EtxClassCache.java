@@ -1,14 +1,14 @@
 package com.bj58.etx.core.cache;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class EtxClassCache {
 
-	private static Map<String, Object> classMap = new ConcurrentHashMap<String, Object>();
+	private static Map<String, Object> classMap = new HashMap<String, Object>();
 	private static Log logger = LogFactory.getLog(EtxClassCache.class);
 	
 	@SuppressWarnings("unchecked")

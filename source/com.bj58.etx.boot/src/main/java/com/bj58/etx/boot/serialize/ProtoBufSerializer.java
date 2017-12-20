@@ -14,39 +14,39 @@ import com.bj58.etx.api.exception.EtxException;
 import com.bj58.etx.api.serialize.IEtxSerializer;
 import com.bj58.etx.boot.context.EtxBaseContext;
 
-public class ProtoBufSerializer implements IEtxSerializer{
+public class ProtoBufSerializer implements IEtxSerializer {
 
-	private static Log log = LogFactory.getLog(ProtoBufSerializer.class);
-	private static Schema<EtxBaseContext> schema = null;
-	 static {
-		 schema = RuntimeSchema.getSchema(EtxBaseContext.class);
-	 }
+    private static Log log = LogFactory.getLog(ProtoBufSerializer.class);
+    private static Schema<EtxBaseContext> schema = null;
 
-	    
-	@Override
-	public byte[] serialize(IEtxContext ctx) {
+    static {
+        schema = RuntimeSchema.getSchema(EtxBaseContext.class);
+    }
+
+    @Override
+    public byte[] serialize(IEtxContext ctx) {
         LinkedBuffer buffer = LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE);
         try {
-        	EtxBaseContext bctx = (EtxBaseContext)ctx;
+            EtxBaseContext bctx = (EtxBaseContext) ctx;
             return ProtobufIOUtil.toByteArray(bctx, schema, buffer);
         } catch (Exception e) {
-        	log.error("序列化失败",e);
-        	throw new EtxException("序列化失败");
+            log.error("序列化失败", e);
+            throw new EtxException("序列化失败");
         } finally {
             buffer.clear();
         }
-	}
+    }
 
-	@Override
-	public IEtxContext deSerialize(byte[] bs) {
-		EtxBaseContext obj = null;  
-        try {  
-            ProtostuffIOUtil.mergeFrom(bs, obj, schema);  
-        } catch (Exception e) {  
-        	log.error("反序列化失败",e);
-        	throw new EtxException("序列化失败");
-        } 
+    @Override
+    public IEtxContext deSerialize(byte[] bs) {
+        EtxBaseContext obj = null;
+        try {
+            ProtostuffIOUtil.mergeFrom(bs, obj, schema);
+        } catch (Exception e) {
+            log.error("反序列化失败", e);
+            throw new EtxException("序列化失败");
+        }
         return obj;
-	}
+    }
 
 }
