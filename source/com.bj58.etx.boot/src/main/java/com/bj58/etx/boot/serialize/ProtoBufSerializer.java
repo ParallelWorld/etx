@@ -1,18 +1,16 @@
 package com.bj58.etx.boot.serialize;
 
+import com.bj58.etx.api.context.IEtxContext;
+import com.bj58.etx.api.exception.EtxException;
+import com.bj58.etx.api.serialize.IEtxSerializer;
+import com.bj58.etx.boot.context.EtxBaseContext;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtobufIOUtil;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import com.bj58.etx.api.context.IEtxContext;
-import com.bj58.etx.api.exception.EtxException;
-import com.bj58.etx.api.serialize.IEtxSerializer;
-import com.bj58.etx.boot.context.EtxBaseContext;
 
 public class ProtoBufSerializer implements IEtxSerializer {
 

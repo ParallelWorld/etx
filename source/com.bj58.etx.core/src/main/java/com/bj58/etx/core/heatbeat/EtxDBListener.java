@@ -1,13 +1,12 @@
 package com.bj58.etx.core.heatbeat;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.bj58.etx.api.enums.EtxTXStateEnum;
 import com.bj58.etx.core.runtime.EtxRuntime;
 import com.bj58.etx.core.util.EtxDaoUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 监听DB状态

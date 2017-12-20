@@ -1,8 +1,8 @@
 package com.bj58.etx.api.db;
 
-import java.util.List;
-
 import com.bj58.etx.api.enums.EtxTXStateEnum;
+
+import java.util.List;
 
 public interface IEtxDao {
 	

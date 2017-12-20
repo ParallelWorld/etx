@@ -1,13 +1,12 @@
 package com.bj58.etx.boot;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.enums.EtxRunMode;
 import com.bj58.etx.boot.context.EtxBaseContext;
 import com.bj58.etx.core.EtxService;
 import com.bj58.etx.core.EtxTaskService;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class Etx {
 	

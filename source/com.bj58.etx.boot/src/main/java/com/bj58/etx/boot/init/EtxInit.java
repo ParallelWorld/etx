@@ -1,14 +1,5 @@
 package com.bj58.etx.boot.init;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.Properties;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.bj58.etx.api.db.IEtxDao;
 import com.bj58.etx.api.exception.EtxException;
 import com.bj58.etx.api.serialize.IEtxSerializer;
@@ -19,6 +10,14 @@ import com.bj58.etx.boot.helper.MongoHelper;
 import com.bj58.etx.boot.helper.MysqlHelper;
 import com.bj58.etx.core.cache.EtxClassCache;
 import com.bj58.etx.core.runtime.EtxRuntime;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EtxInit {
 

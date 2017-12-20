@@ -1,11 +1,11 @@
 package com.bj58.etx.boot.dao.mysql;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
 import com.bj58.etx.api.db.EtxAsyncLog;
 import com.bj58.etx.api.db.EtxSyncLog;
 import com.bj58.etx.api.db.EtxTX;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 public class RsMapper {
 

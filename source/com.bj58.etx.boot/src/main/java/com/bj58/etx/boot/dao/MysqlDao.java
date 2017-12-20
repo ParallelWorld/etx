@@ -1,11 +1,5 @@
 package com.bj58.etx.boot.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bj58.etx.api.db.EtxAsyncLog;
 import com.bj58.etx.api.db.EtxSyncLog;
 import com.bj58.etx.api.db.EtxTX;
@@ -14,6 +8,12 @@ import com.bj58.etx.api.enums.EtxTXStateEnum;
 import com.bj58.etx.boot.dao.mysql.RsMapper;
 import com.bj58.etx.boot.helper.IdHelper;
 import com.bj58.etx.boot.helper.MysqlHelper;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MysqlDao implements IEtxDao {
 

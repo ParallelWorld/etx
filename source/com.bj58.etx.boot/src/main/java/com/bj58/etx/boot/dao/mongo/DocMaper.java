@@ -1,11 +1,10 @@
 package com.bj58.etx.boot.dao.mongo;
 
-import org.bson.Document;
-import org.bson.types.Binary;
-
 import com.bj58.etx.api.db.EtxAsyncLog;
 import com.bj58.etx.api.db.EtxSyncLog;
 import com.bj58.etx.api.db.EtxTX;
+import org.bson.Document;
+import org.bson.types.Binary;
 
 
 public class DocMaper {

@@ -1,16 +1,15 @@
 package com.bj58.etx.boot.helper;
 
+import com.mysql.jdbc.Driver;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import com.mysql.jdbc.Driver;
 
 @SuppressWarnings("static-access")
 public class MysqlHelper {

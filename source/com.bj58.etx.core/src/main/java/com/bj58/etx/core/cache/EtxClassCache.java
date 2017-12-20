@@ -1,10 +1,10 @@
 package com.bj58.etx.core.cache;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EtxClassCache {
 
