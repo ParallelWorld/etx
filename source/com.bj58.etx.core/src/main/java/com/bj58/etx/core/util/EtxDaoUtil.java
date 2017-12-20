@@ -1,6 +1,6 @@
 package com.bj58.etx.core.util;
 
-import com.bj58.etx.api.componet.IEtxAsyncComponet;
+import com.bj58.etx.api.componet.IEtxAsyncComponent;
 import com.bj58.etx.api.componet.IEtxSyncComponet;
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.db.EtxAsyncLog;
@@ -124,7 +124,7 @@ public class EtxDaoUtil {
 		dao.updateSyncLog(log);
 	}
 
-	public static long insertAsyncLog(IEtxAsyncComponet c, IEtxContext ctx, long txId) throws Exception {
+	public static long insertAsyncLog(IEtxAsyncComponent c, IEtxContext ctx, long txId) throws Exception {
 		long now = EtxDateTimeUtil.getFullTimestamp();
 		EtxAsyncLog log = new EtxAsyncLog();
 		log.setAddTime(now);

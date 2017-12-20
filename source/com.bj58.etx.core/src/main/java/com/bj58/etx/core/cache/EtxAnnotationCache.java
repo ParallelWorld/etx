@@ -1,8 +1,8 @@
 package com.bj58.etx.core.cache;
 
 import com.bj58.etx.api.annotation.EtxRetry;
-import com.bj58.etx.api.componet.IEtxAsyncComponet;
-import com.bj58.etx.api.componet.IEtxComponet;
+import com.bj58.etx.api.componet.IEtxAsyncComponent;
+import com.bj58.etx.api.componet.IEtxComponent;
 import com.bj58.etx.api.componet.IEtxSyncComponet;
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.exception.EtxException;
@@ -20,7 +20,7 @@ public class EtxAnnotationCache {
     private static Map<String, EtxRetry> do_service_retry_map = new HashMap<String, EtxRetry>(32);
     private static Log logger = LogFactory.getLog(EtxAnnotationCache.class);
 
-    private static EtxRetry getRetry(IEtxComponet c, Map<String, EtxRetry> map, String methodName) {
+    private static EtxRetry getRetry(IEtxComponent c, Map<String, EtxRetry> map, String methodName) {
         if (c == null) {
             return null;
         }
@@ -59,11 +59,11 @@ public class EtxAnnotationCache {
         return getRetry(c, do_confirm_retry_map, "doConfirm");
     }
 
-    public static EtxRetry getCancelRetry(IEtxComponet c) {
+    public static EtxRetry getCancelRetry(IEtxComponent c) {
         return getRetry(c, do_cancel_retry_map, "doCancel");
     }
 
-    public static EtxRetry getServiceRetry(IEtxAsyncComponet c) {
+    public static EtxRetry getServiceRetry(IEtxAsyncComponent c) {
         return getRetry(c, do_service_retry_map, "doService");
     }
 }

@@ -1,7 +1,7 @@
 package com.bj58.etx.core.async;
 
-import com.bj58.etx.api.componet.IEtxAsyncComponet;
-import com.bj58.etx.api.componet.IEtxMonitorAsyncComponet;
+import com.bj58.etx.api.componet.IEtxAsyncComponent;
+import com.bj58.etx.api.componet.IEtxMonitorAsyncComponent;
 import com.bj58.etx.api.componet.IEtxSyncComponet;
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.db.EtxAsyncLog;
@@ -89,15 +89,15 @@ public class AsyncWorker {
     /**
      * 执行异步任务
      */
-    public static void invokeAsyncInProcess(final List<IEtxAsyncComponet> asyncList, final IEtxContext ctx) {
+    public static void invokeAsyncInProcess(final List<IEtxAsyncComponent> asyncList, final IEtxContext ctx) {
         fixedThreadPool.submit(new Runnable() {
             @Override
             public void run() {
-                for (IEtxAsyncComponet c : asyncList) {
+                for (IEtxAsyncComponent c : asyncList) {
                     boolean b = ComponetInvoker.invokeAsyncService(c, ctx, true);
                     // 最终执行失败会触发监控消息
-                    if (!b && c instanceof IEtxMonitorAsyncComponet) {
-                        IEtxMonitorAsyncComponet mac = (IEtxMonitorAsyncComponet) c;
+                    if (!b && c instanceof IEtxMonitorAsyncComponent) {
+                        IEtxMonitorAsyncComponent mac = (IEtxMonitorAsyncComponent) c;
                         ComponetInvoker.invokeAbsolutelyError(mac, ctx);
                     }
                 }
@@ -126,7 +126,7 @@ public class AsyncWorker {
                     int successCount = 0;
                     for (EtxAsyncLog log : list) {
                         long logId = log.getId();
-                        IEtxAsyncComponet c = EtxClassCache.getInstance(log.getComponet());
+                        IEtxAsyncComponent c = EtxClassCache.getInstance(log.getComponet());
                         if (c == null) {
                             continue;
                         }

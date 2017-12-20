@@ -1,11 +1,11 @@
 package com.bj58.etx.demo.componet;
 
-import com.bj58.etx.api.componet.IEtxTCCComponet;
+import com.bj58.etx.api.componet.IEtxTCCComponent;
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.demo.business.VirtualInvoker;
 import com.bj58.etx.demo.dto.TestDto;
 
-public class TCC2Componet implements IEtxTCCComponet {
+public class TCC2Componet implements IEtxTCCComponent {
 
 	@Override
 	public boolean doTry(IEtxContext ctx) throws Exception {

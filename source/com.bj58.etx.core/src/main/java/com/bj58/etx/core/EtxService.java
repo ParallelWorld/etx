@@ -1,9 +1,9 @@
 package com.bj58.etx.core;
 
-import com.bj58.etx.api.componet.IEtxAsyncComponet;
-import com.bj58.etx.api.componet.IEtxComponet;
+import com.bj58.etx.api.componet.IEtxAsyncComponent;
+import com.bj58.etx.api.componet.IEtxComponent;
 import com.bj58.etx.api.componet.IEtxSyncComponet;
-import com.bj58.etx.api.componet.IEtxTCCComponet;
+import com.bj58.etx.api.componet.IEtxTCCComponent;
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.dto.IEtxDto;
 import com.bj58.etx.api.enums.EtxRunMode;
@@ -32,9 +32,9 @@ public class EtxService {
 	private long txId;
 
 	private IEtxContext ctx;
-	private List<IEtxTCCComponet> tccList = new ArrayList<IEtxTCCComponet>();
+	private List<IEtxTCCComponent> tccList = new ArrayList<IEtxTCCComponent>();
 	private List<IEtxSyncComponet> syncList = new ArrayList<IEtxSyncComponet>();
-	private List<IEtxAsyncComponet> asyncList = new ArrayList<IEtxAsyncComponet>();
+	private List<IEtxAsyncComponent> asyncList = new ArrayList<IEtxAsyncComponent>();
 	private Stack<IEtxSyncComponet> stack = new Stack<IEtxSyncComponet>();
 	// binLog的执行时间
 	private long binLogNanos = 0;
@@ -57,15 +57,15 @@ public class EtxService {
 		}
 	}
 
-	public EtxService addComponet(Class<? extends IEtxComponet> clazz) {
-		IEtxComponet c = EtxClassCache.getInstance(clazz);
+	public EtxService addComponet(Class<? extends IEtxComponent> clazz) {
+		IEtxComponent c = EtxClassCache.getInstance(clazz);
 		if (c instanceof IEtxSyncComponet) {
 			syncList.add((IEtxSyncComponet) c);
-			if (c instanceof IEtxTCCComponet) {
-				tccList.add((IEtxTCCComponet) c);
+			if (c instanceof IEtxTCCComponent) {
+				tccList.add((IEtxTCCComponent) c);
 			}
-		} else if (c instanceof IEtxAsyncComponet) {
-			asyncList.add((IEtxAsyncComponet) c);
+		} else if (c instanceof IEtxAsyncComponent) {
+			asyncList.add((IEtxAsyncComponent) c);
 		}
 
 		if ((syncList.size() + asyncList.size()) > 63) {
@@ -179,7 +179,7 @@ public class EtxService {
 	 */
 	private boolean invokeSyncComponents() {
 		// 1.执行所有tcc的try
-		for (IEtxTCCComponet c : tccList) {
+		for (IEtxTCCComponent c : tccList) {
 			boolean b = ComponetInvoker.invokeTry(c, ctx);
 			if (!b) {
 				return false;
@@ -207,7 +207,7 @@ public class EtxService {
 	private void commitAsyncComponents() throws Exception {
 		if (txId > 0) {
 			// 写入异步组件日志
-			for (IEtxAsyncComponet c : asyncList) {
+			for (IEtxAsyncComponent c : asyncList) {
 				EtxDaoUtil.insertAsyncLog(c, ctx, txId);
 			}
 		}

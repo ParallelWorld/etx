@@ -3,7 +3,7 @@ package com.bj58.etx.demo;
 import com.bj58.etx.boot.Etx;
 import com.bj58.etx.boot.init.EtxInit;
 import com.bj58.etx.demo.componet.AsyncComponet;
-import com.bj58.etx.demo.componet.MonitorAsyncComponet;
+import com.bj58.etx.demo.componet.MonitorAsyncComponent;
 import com.bj58.etx.demo.componet.SyncComponet;
 import com.bj58.etx.demo.componet.TCC1Componet;
 import com.bj58.etx.demo.componet.TCC2Componet;
@@ -24,7 +24,7 @@ public class Main {
                 .addComponet(SyncComponet.class)
                 .addComponet(TCC1Componet.class)
                 .addComponet(TCC2Componet.class)
-                .addComponet(MonitorAsyncComponet.class)
+                .addComponet(MonitorAsyncComponent.class)
                 .addComponet(AsyncComponet.class)
                 .invoke(testId);
     }

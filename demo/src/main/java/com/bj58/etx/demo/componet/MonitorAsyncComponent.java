@@ -1,11 +1,11 @@
 package com.bj58.etx.demo.componet;
 
-import com.bj58.etx.api.componet.IEtxMonitorAsyncComponet;
+import com.bj58.etx.api.componet.IEtxMonitorAsyncComponent;
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.demo.business.VirtualInvoker;
 
 
-public class MonitorAsyncComponet implements IEtxMonitorAsyncComponet {
+public class MonitorAsyncComponent implements IEtxMonitorAsyncComponent {
 
 	@Override
 	public boolean doService(IEtxContext ctx) throws Exception {

@@ -1,10 +1,10 @@
 package com.bj58.etx.core.invoke;
 
 import com.bj58.etx.api.annotation.EtxRetry;
-import com.bj58.etx.api.componet.IEtxAsyncComponet;
-import com.bj58.etx.api.componet.IEtxMonitorAsyncComponet;
+import com.bj58.etx.api.componet.IEtxAsyncComponent;
+import com.bj58.etx.api.componet.IEtxMonitorAsyncComponent;
 import com.bj58.etx.api.componet.IEtxSyncComponet;
-import com.bj58.etx.api.componet.IEtxTCCComponet;
+import com.bj58.etx.api.componet.IEtxTCCComponent;
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.idempotent.IEtxQueryCheck;
 import com.bj58.etx.api.vo.IEtxVo;
@@ -20,7 +20,7 @@ public class ComponetInvoker {
 
     private static Log logger = LogFactory.getLog(ComponetInvoker.class);
 
-    public static boolean invokeTry(IEtxTCCComponet c, IEtxContext ctx) {
+    public static boolean invokeTry(IEtxTCCComponent c, IEtxContext ctx) {
         boolean b = false;
         setVoResult(ctx, b);
         try {
@@ -120,7 +120,7 @@ public class ComponetInvoker {
         return b;
     }
 
-    public static boolean invokeAsyncService(IEtxAsyncComponet c, IEtxContext ctx) {
+    public static boolean invokeAsyncService(IEtxAsyncComponent c, IEtxContext ctx) {
         boolean b = false;
         setVoResult(ctx, b);
         try {
@@ -137,7 +137,7 @@ public class ComponetInvoker {
         return b;
     }
 
-    public static boolean invokeAsyncService(IEtxAsyncComponet c, IEtxContext ctx, boolean willRetry) {
+    public static boolean invokeAsyncService(IEtxAsyncComponent c, IEtxContext ctx, boolean willRetry) {
         boolean b = ComponetInvoker.invokeAsyncService(c, ctx);
 
         if (!willRetry) {
@@ -172,7 +172,7 @@ public class ComponetInvoker {
         return b;
     }
 
-    public static void invokeAbsolutelyError(IEtxMonitorAsyncComponet c, IEtxContext ctx) {
+    public static void invokeAbsolutelyError(IEtxMonitorAsyncComponent c, IEtxContext ctx) {
         try {
             logger.error("------执行onAbsolutelyError,componet = " + c.getClass().getName() + ",ctx=" + ctx);
             c.onAbsolutelyError(ctx);

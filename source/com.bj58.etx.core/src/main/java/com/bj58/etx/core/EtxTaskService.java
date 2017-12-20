@@ -1,8 +1,8 @@
 package com.bj58.etx.core;
 
 import com.bj58.etx.api.annotation.EtxRetry;
-import com.bj58.etx.api.componet.IEtxAsyncComponet;
-import com.bj58.etx.api.componet.IEtxMonitorAsyncComponet;
+import com.bj58.etx.api.componet.IEtxAsyncComponent;
+import com.bj58.etx.api.componet.IEtxMonitorAsyncComponent;
 import com.bj58.etx.api.componet.IEtxSyncComponet;
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.db.EtxAsyncLog;
@@ -187,7 +187,7 @@ public class EtxTaskService {
 		for (EtxAsyncLog log : list) {
 			long logId = log.getId();
 			String componetName = log.getComponet();
-			IEtxAsyncComponet async = EtxClassCache.getInstance(componetName);
+			IEtxAsyncComponent async = EtxClassCache.getInstance(componetName);
 			logger.info("------获取到异步log,txId=" + txId + ",log.id=" + log.getId() + ",log.componet=" + componetName + ",log.count=" + log.getCount());
 			if (async == null) {
 				// 这个类可能是换名了，此条事务记录没有存在的意义了
@@ -220,8 +220,8 @@ public class EtxTaskService {
 			if (log.getCount() >= count) {
 				logger.info("-----关闭异步明细,txId=" + txId + ",logId=" + logId + ",log.count = " + log.getCount() + ",repeat=" + count);
 				EtxDaoUtil.updateAsyncLogState(txId, logId, EtxAsyncLogStateEnum.CLOSE);
-				if (async instanceof IEtxMonitorAsyncComponet) {
-					IEtxMonitorAsyncComponet mac = (IEtxMonitorAsyncComponet) async;
+				if (async instanceof IEtxMonitorAsyncComponent) {
+					IEtxMonitorAsyncComponent mac = (IEtxMonitorAsyncComponent) async;
 					mac.onAbsolutelyError(ctx);
 				}
 				continue;

@@ -6,7 +6,7 @@ import com.bj58.etx.api.context.IEtxContext;
  * etx同步执行组件
  * @author shencl
  */
-public interface IEtxSyncComponet extends IEtxComponet {
+public interface IEtxSyncComponet extends IEtxComponent {
 
 	/**
 	 * 确认操作
