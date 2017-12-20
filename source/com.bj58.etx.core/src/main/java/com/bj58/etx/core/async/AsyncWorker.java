@@ -13,8 +13,8 @@ import com.bj58.etx.core.cache.EtxClassCache;
 import com.bj58.etx.core.invoke.ComponetInvoker;
 import com.bj58.etx.core.runtime.EtxRuntime;
 import com.bj58.etx.core.util.EtxDaoUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Stack;
@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 
 public class AsyncWorker {
 
-    private static Log logger = LogFactory.getLog(AsyncWorker.class);
+    private static Logger logger = LoggerFactory.getLogger(AsyncWorker.class);
     private static ExecutorService fixedThreadPool = Executors.newFixedThreadPool(EtxRuntime.processThreadCount);
 
     /**

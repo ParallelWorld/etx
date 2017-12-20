@@ -6,8 +6,8 @@ import com.bj58.etx.api.componet.IEtxComponent;
 import com.bj58.etx.api.componet.IEtxSyncComponet;
 import com.bj58.etx.api.context.IEtxContext;
 import com.bj58.etx.api.exception.EtxException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ public class EtxAnnotationCache {
     private static Map<String, EtxRetry> do_confirm_retry_map = new HashMap<String, EtxRetry>(32);
     private static Map<String, EtxRetry> do_cancel_retry_map = new HashMap<String, EtxRetry>(32);
     private static Map<String, EtxRetry> do_service_retry_map = new HashMap<String, EtxRetry>(32);
-    private static Log logger = LogFactory.getLog(EtxAnnotationCache.class);
+    private static Logger logger = LoggerFactory.getLogger(EtxAnnotationCache.class);
 
     private static EtxRetry getRetry(IEtxComponent c, Map<String, EtxRetry> map, String methodName) {
         if (c == null) {

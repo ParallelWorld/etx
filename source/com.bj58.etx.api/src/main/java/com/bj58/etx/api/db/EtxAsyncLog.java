@@ -2,102 +2,103 @@ package com.bj58.etx.api.db;
 
 /**
  * 执行明细
+ *
  * @author shencl
  */
 public class EtxAsyncLog {
-	
-	//日志Id
-	private long id;
-	
-	//事务组Id
-	private long txId;
-	
-	//组件类名
-	private String componet;
-	
-	//状态
-	private String state;
-	
-	//添加时间
-	private long addTime;
-	
-	//修改时间
-	private long modifyTime;
-	
-	//上下文数据
-	private byte[] data;
-	
-	//已执行次数
-	private int count;
 
-	public long getId() {
-		return id;
-	}
+    //日志Id
+    private long id;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    //事务组Id
+    private long txId;
 
-	public long getTxId() {
-		return txId;
-	}
+    //组件类名
+    private String componet;
 
-	public void setTxId(long txId) {
-		this.txId = txId;
-	}
+    //状态
+    private String state;
 
-	public String getComponet() {
-		return componet;
-	}
+    //添加时间
+    private long addTime;
 
-	public void setComponet(String componet) {
-		this.componet = componet;
-	}
+    //修改时间
+    private long modifyTime;
 
-	public String getState() {
-		return state;
-	}
+    //上下文数据
+    private byte[] data;
 
-	public void setState(String state) {
-		this.state = state;
-	}
+    //已执行次数
+    private int count;
 
-	public byte[] getData() {
-		return data;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setData(byte[] data) {
-		this.data = data;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public long getAddTime() {
-		return addTime;
-	}
+    public long getTxId() {
+        return txId;
+    }
 
-	public void setAddTime(long addTime) {
-		this.addTime = addTime;
-	}
+    public void setTxId(long txId) {
+        this.txId = txId;
+    }
 
-	public long getModifyTime() {
-		return modifyTime;
-	}
+    public String getComponet() {
+        return componet;
+    }
 
-	public void setModifyTime(long modifyTime) {
-		this.modifyTime = modifyTime;
-	}
+    public void setComponet(String componet) {
+        this.componet = componet;
+    }
 
-	public int getCount() {
-		return count;
-	}
+    public String getState() {
+        return state;
+    }
 
-	public void setCount(int count) {
-		this.count = count;
-	}
+    public void setState(String state) {
+        this.state = state;
+    }
 
-	@Override
-	public String toString() {
-		return "EtxAsyncLog [id=" + id + ", txId=" + txId + ", componet=" + componet + ", state=" + state + ", addTime=" + addTime + ", modifyTime=" + modifyTime + ", count="
-				+ count + "]";
-	}
-	
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
+    public long getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(long addTime) {
+        this.addTime = addTime;
+    }
+
+    public long getModifyTime() {
+        return modifyTime;
+    }
+
+    public void setModifyTime(long modifyTime) {
+        this.modifyTime = modifyTime;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    @Override
+    public String toString() {
+        return "EtxAsyncLog [id=" + id + ", txId=" + txId + ", componet=" + componet + ", state=" + state + ", addTime=" + addTime + ", modifyTime=" + modifyTime + ", count="
+                + count + "]";
+    }
+
 }

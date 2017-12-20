@@ -9,12 +9,12 @@ import io.protostuff.ProtobufIOUtil;
 import io.protostuff.ProtostuffIOUtil;
 import io.protostuff.Schema;
 import io.protostuff.runtime.RuntimeSchema;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProtoBufSerializer implements IEtxSerializer {
 
-    private static Log log = LogFactory.getLog(ProtoBufSerializer.class);
+    private static Logger log = LoggerFactory.getLogger(ProtoBufSerializer.class);
     private static Schema<EtxBaseContext> schema = null;
 
     static {

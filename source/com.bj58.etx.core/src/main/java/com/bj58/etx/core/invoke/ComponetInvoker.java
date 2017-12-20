@@ -11,14 +11,14 @@ import com.bj58.etx.api.vo.IEtxVo;
 import com.bj58.etx.core.cache.EtxAnnotationCache;
 import com.bj58.etx.core.cache.EtxClassCache;
 import com.bj58.etx.core.util.EtxMonitorUtil;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.TimeUnit;
 
 public class ComponetInvoker {
 
-    private static Log logger = LogFactory.getLog(ComponetInvoker.class);
+    private static Logger logger = LoggerFactory.getLogger(ComponetInvoker.class);
 
     public static boolean invokeTry(IEtxTCCComponent c, IEtxContext ctx) {
         boolean b = false;
