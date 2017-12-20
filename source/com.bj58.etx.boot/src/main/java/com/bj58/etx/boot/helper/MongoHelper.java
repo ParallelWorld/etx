@@ -1,6 +1,5 @@
 package com.bj58.etx.boot.helper;
 
-import com.bj58.etx.core.EtxInit;
 import com.bj58.etx.core.util.EtxDateTimeUtil;
 import com.bj58.etx.core.util.EtxIdUtil;
 import com.mongodb.MongoClient;
@@ -15,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
