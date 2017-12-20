@@ -17,7 +17,7 @@ public class VirtualInvoker {
 		Thread.sleep(1000);
 		
 		// 模拟执行结果
-		if(ran.nextInt(20) > 2){
+		if(ran.nextInt(20) > 0){
 			return true;
 		}
 		return false;
